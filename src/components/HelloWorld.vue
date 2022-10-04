@@ -13,9 +13,18 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: 'HelloWorld'
-}
+  name: "HelloWorld",
+  mounted() {
+    axios
+      .get("https://jsonplaceholder.typicode.com/posts/1")
+      .then((response) => {
+        console.log(response.data.title);
+      });
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
