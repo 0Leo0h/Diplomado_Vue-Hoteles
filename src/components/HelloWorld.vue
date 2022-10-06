@@ -53,7 +53,7 @@ export default {
               {
                 label: ['HOTELES'],
                 data: [this.monteria, this.barranquilla, this.medellin, this.bogota],
-                backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4'],
+                backgroundColor: ['#FFF554', '#FF8633', '#54FF85', '#54E3FF'],
               },
             ],
     }
@@ -71,7 +71,7 @@ export default {
         datasets: [
           {
             data: [10, 40, 60, 70],
-            backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4'],
+            backgroundColor: ['#FF8633', '#54E3FF', '#FFF554', '#54FF85'],
           },
         ],
       }

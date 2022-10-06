@@ -106,6 +106,13 @@ export default {
     },
     methods: {
         crear() {
+            this.error.mensage = null;
+            this.error.address = null;
+            this.error.city_id = null;
+            this.error.name = null;
+            this.error.nit = null;
+            this.error.num_rooms = null;
+            this.success = null;
             axios({
                 method: 'post',
                 url: `http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels`,

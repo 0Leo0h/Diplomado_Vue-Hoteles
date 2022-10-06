@@ -118,6 +118,8 @@ export default {
             })
         },
         eliminar() {
+            this.error.mensage = null;
+            this.success = null;
             axios.delete(`http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels/${this.items}`)
                 .then(response => {
                     this.hotel.name = null;
@@ -126,7 +128,7 @@ export default {
                     this.hotel.num_rooms = null;
                     this.hotel.city_id = null;
                     this.items = null;
-                    this.success = response.data.message
+                    this.success = response.data.message;
                 }).catch(error => {
                     this.error.mensage = error.response.data.message;
                 });

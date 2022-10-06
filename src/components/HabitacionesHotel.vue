@@ -95,10 +95,10 @@ export default {
     },
     methods: {
         eliminar(id) {
+            this.error.mensage = null;
+            this.success = null;
             axios.delete(`http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/rooms/${id}`)
                 .then(response => {
-                    const nuevo = this.items.filter((item)=>item!=response.data.data)
-                    this.items = nuevo 
                     this.success = response.data.success
                 }).catch(error => {
                     this.error.mensage = error.response.data.message;
