@@ -69,4 +69,7 @@ export default {
   /* color: #2c3e50; */
   background: #f3f4f6;
 }
+a{
+  cursor: pointer;
+}
 </style>

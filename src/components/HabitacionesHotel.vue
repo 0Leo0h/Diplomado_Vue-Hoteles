@@ -9,10 +9,13 @@
                                 <router-link to="/" class="nav-link">Inicio</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/hoteles" class="nav-link"> <strong class="me-2"> ></strong> Hoteles <strong class="ms-2">></strong></router-link>
+                                <router-link to="/hoteles" class="nav-link"> <strong class="me-2"> ></strong> Hoteles
+                                    <strong class="ms-2">></strong>
+                                </router-link>
                             </li>
                             <li class="nav-item dropdown">
-                                <router-link :to="{name:'Habitaciones_Hotel', params:{id: id} }" class="text-danger nav-link">Habitaciones</router-link>
+                                <router-link :to="{name:'Habitaciones_Hotel', params:{id: id} }"
+                                    class="text-danger nav-link">Habitaciones</router-link>
                             </li>
                         </ul>
                     </div>
@@ -20,12 +23,14 @@
             </nav>
             <div class="row p-3">
                 <div class="col-6 text-start">
-                    <h4 class="ms-5"><strong>Nombre de hotel?</strong></h4>
-                    <p class="ms-5">Numero de habitaciones: </p>
+                    <h4 class="ms-5"><strong>{{hotel?.name}}</strong></h4>
+                    <p class="ms-5">Numero de habitaciones: {{hotel?.num_rooms}}</p>
                 </div>
                 <div class="col-6 text-end">
                     <h4 class="ms-5"><button class="btn btn-success">
-                                <router-link :to="{name:'Crear_Habitacion', params:{id: id} }" class="nav-link">Crear Habitacion</router-link></button></h4>
+                            <router-link :to="{name:'Crear_Habitacion', params:{id: id} }" class="nav-link">Crear
+                                Habitacion</router-link>
+                        </button></h4>
                 </div>
             </div>
             <table class="table table-striped text-start">
@@ -38,40 +43,68 @@
                 </thead>
                 <tbody>
                     <tr v-for="(item,index) in items" :key="index">
-                        <th scope="row">{{ item.id }}</th>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.name }}</td>
+                        <th>{{ item.type.name }}</th>
+                        <td>{{ item.accommodation.name }}</td>
+                        <td>{{ item.quantity }}</td>
                         <td><button class="btn btn-warning me-5">
-                                <router-link :to="{name:'Editar_Habitacion', params:{id: item.id} }" class="nav-link">Editar</router-link>
+                                <router-link :to="{name:'Editar_Habitacion', params:{id: item.id} }" class="nav-link">
+                                    Editar</router-link>
                             </button></td>
-                        <td><button class="btn btn-danger me-5">Eliminar
+                        <td><button class="btn btn-danger me-5" @click="eliminar(item.id)">Eliminar
                             </button></td>
                     </tr>
                 </tbody>
             </table>
+                    <div v-if="success" class="alert alert-success mt-2" role="alert">
+                        Habitacion Eliminada correctamente!
+                    </div>
+                    <div v-if="error.mensage" class="alert alert-danger mt-2" role="alert">
+                        {{error.mensage}}
+                    </div>
         </div>
     </div>
 </template>
   
 <script>
+import axios from "axios";
+
 export default {
     name: "HabitacionesHotel",
-    data: function () {
+    beforeMount() {
+        let idd = this.$route.params.id
+        axios.get(`http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/hotels/${idd}`)
+            .then((response) => {
+                this.hotel = response.data.data;
+            });
+        axios.get(`http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/rooms/${idd}`)
+            .then((response) => {
+                this.items = response.data.data
+            });
+    },
+    data() {
         let idd = this.$route.params.id
         return {
             id: idd,
-            items: [
-                {
-                    id: idd,
-                    name: "Hola",
-                },
-                {
-                    id: 2,
-                    name: "Hola2",
-                },
-            ],
+            items: [],
+            hotel: null,
+            error: {
+                mensage: null
+            },
+            success: null
         };
     },
+    methods: {
+        eliminar(id) {
+            axios.delete(`http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/rooms/${id}`)
+                .then(response => {
+                    const nuevo = this.items.filter((item)=>item!=response.data.data)
+                    this.items = nuevo 
+                    this.success = response.data.success
+                }).catch(error => {
+                    this.error.mensage = error.response.data.message;
+                });
+        }
+    }
 };
 </script>
   

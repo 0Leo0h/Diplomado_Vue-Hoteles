@@ -24,20 +24,19 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
     name: "TipoAcomodaciones",
+    beforeMount() {
+        axios.get(`http://ec2-44-201-108-206.compute-1.amazonaws.com/decameron/api/accommodation-types`)
+            .then((response) => {
+                this.items = response.data
+            });
+    },
     data: function () {
         return {
-            items: [
-                {
-                    id: 1,
-                    name: "Hola",
-                },
-                {
-                    id: 2,
-                    name: "Hola2",
-                },
-            ],
+            items: [],
         };
     },
 };
